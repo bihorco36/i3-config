@@ -13,30 +13,32 @@ set $mod Mod1
 
 
 # Set variables for monitors
-set @monR HDMI-1
-set @monM DP-1-2
 set @monL eDP-1
+set @monM DP-1-1
+set @monR DP-1-2
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 8
+font pango:System San Francisco Display 10
 
 #deuglify i3
-client.focused          #232323 #232323 #DCDCDC #000000
-client.focused_inactive #333333 #5F676A #ffffff #484e50
-client.unfocused        #333333 #5F676A #ffffff #484e50
-client.urgent           #C10004 #900000 #ffffff #900000
+client.focused          #2F343F #CC0000 #DCDCDC #000001
+client.focused_inactive #2C3F50 #2F343F #ffffff #484e50
+client.unfocused        #34495E #34495E #ffffff #484e50
+client.urgent           #C10004 #FFFFFF #ffffff #900000
 
 #Status Bar
 bar {
     status_command i3status
     colors{
-        background #232323
+        background #2F343F
         statusline #DCDCDC
     }
 }
 
-font pango: Ubuntu Mono 10
+exec --no-startup-id feh --bg-scale ~/pictures/Wallpapers/Mountain.png
+
+new_window pixel 3
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -59,7 +61,7 @@ bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec rofi-launch.sh
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -120,7 +122,7 @@ bindsym $mod+1 workspace 1:web
 bindsym $mod+2 workspace 2:console
 bindsym $mod+3 workspace 3:dev1
 bindsym $mod+4 workspace 4:dev2
-bindsym $mod+5 workspace 5
+bindsym $mod+5 workspace 5:dok
 bindsym $mod+6 workspace 6
 bindsym $mod+7 workspace 7:gitg
 bindsym $mod+8 workspace 8:server
@@ -132,7 +134,7 @@ bindsym $mod+Shift+1 move container to workspace 1:web
 bindsym $mod+Shift+2 move container to workspace 2:console
 bindsym $mod+Shift+3 move container to workspace 3:dev1
 bindsym $mod+Shift+4 move container to workspace 4:dev2
-bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+5 move container to workspace 5:dok
 bindsym $mod+Shift+6 move container to workspace 6
 bindsym $mod+Shift+7 move container to workspace 7:gitg
 bindsym $mod+Shift+8 move container to workspace 8:server
@@ -140,7 +142,7 @@ bindsym $mod+Shift+9 move container to workspace 9:mail
 bindsym $mod+Shift+0 move container to workspace 10:music
 
 # Set default Monitor for workspace
-#workspace 1:web output $monR
+workspace 1:web output $monR
 
 # open default on start up
 #exec --no-startup-id i3-msg 'workspace 1:web output $modM; exec opera'
@@ -186,13 +188,13 @@ bindsym $mod+r mode "resize"
 # Touchpad controls
 bindsym XF86TouchpadToggle exec /some/path/toggletouchpad.sh # toggle touchpad
 
-bindsym Control+Mod1+l exec i3lock -i ~/.i3/lock-bg.png -c 000000
+bindsym Control+Mod1+l exec i3lock -c 000000
 
 # Pulse Audio controls
 set $sink `pactl list short sinks | grep RUNNING | cut -f1`
 bindsym $mod+Delete exec --no-startup-id pactl set-sink-mute $sink toggle
-bindsym $mod+Home exec amixer -D pulse sset Master 2%+ 
-bindsym $mod+End exec amixer -D pulse sset Master 2%-
+bindsym $mod+Home exec amixer -D pulse sset Master 1%+ 
+bindsym $mod+End exec amixer -D pulse sset Master 1%-
 
 #Lock settings
 set $Locker i3lock && sleep 1
@@ -216,6 +218,10 @@ bindsym $mod+Pause mode "$mode_system"
 # move workspace to other screen
 bindsym $mod+m move workspace to output right
 
+# disable close window
+
+bindsym Strg+W 'test'
+
 
 #Startup Applications
 exec --no-startup-id nm-applet
@@ -233,3 +239,4 @@ exec ssh-add ~/.ssh/id_rsa
 
 #Run Backup script
 exec userbackup
+
