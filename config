@@ -192,9 +192,16 @@ bindsym Control+Mod1+l exec i3lock -c 000000
 
 # Pulse Audio controls
 set $sink `pactl list short sinks | grep RUNNING | cut -f1`
-bindsym $mod+Delete exec --no-startup-id pactl set-sink-mute $sink toggle
-bindsym $mod+Home exec amixer -D pulse sset Master 1%+ 
-bindsym $mod+End exec amixer -D pulse sset Master 1%-
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute $sink toggle
+bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 1%+ 
+bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 1%-
+
+# Brightness controls
+
+bindsym XF86MonBrightnessUp        exec light -A 10
+bindsym $mod+XF86MonBrightnessUp   exec light -S 100
+bindsym XF86MonBrightnessDown      exec light -U 10
+bindsym $mod+XF86MonBrightnessDown exec light -S 0
 
 #Lock settings
 set $Locker i3lock && sleep 1
