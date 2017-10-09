@@ -118,7 +118,7 @@ bindsym $mod+Shift+9 move container to workspace 9:mail
 bindsym $mod+Shift+0 move container to workspace 10:music
 
 # Set default Monitor for workspace
-workspace 1:web output $monR
+#workspace 1:web output $monR
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -201,8 +201,16 @@ exec whatpulse
 bindsym $mod+Strg+l exec i3lock ⁻f
 
 #Set Screen Settings
-bindsym $mod+Shift+P exec sh ~/.screenlayout/puzzle-3-screens.sh
-exec sh ~/.screenlayout/puzzle-3-screens.sh
+
+bindsym $mod+Shift+P mode "$mode_monitor"
+
+set $mode_monitor (1) One Screen, (3) Puzzle Screens
+mode "$mode_monitor" {
+    bindsym 1 exec sh ~/.screenlayout/puzzle-1-screens.sh, mode "default"
+    bindsym 3 exec sh ~/.screenlayout/puzzle-3-screens.sh, mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
 
 #Add ssh key to agent
 exec ssh-add ~/.ssh/id_rsa
