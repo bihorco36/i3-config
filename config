@@ -168,8 +168,6 @@ bindsym $mod+r mode "resize"
 # Touchpad controls
 bindsym XF86TouchpadToggle exec /some/path/toggletouchpad.sh # toggle touchpad
 
-bindsym Control+Mod1+l exec i3lock -c 000000
-
 # Pulse Audio controls
 set $sink `pactl list short sinks | grep RUNNING | cut -f1`
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute $sink toggle
@@ -184,7 +182,8 @@ bindsym XF86MonBrightnessDown      exec light -U 10
 bindsym $mod+XF86MonBrightnessDown exec light -S 0
 
 #Lock settings
-set $Locker i3lock && sleep 1
+set $Locker /home/jbinder/.config/i3/lock.sh
+bindsym Control+Mod1+l exec $Locker
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
@@ -209,8 +208,7 @@ bindsym $mod+m move workspace to output right
 exec --no-startup-id nm-applet
 exec whatpulse
 
-#Lock Screen
-bindsym $mod+Strg+l exec i3lock ⁻f
+exec --no-startup-id xautolock -time 1 -locker "$Locker
 
 #Set Screen Settings
 
