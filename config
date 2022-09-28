@@ -1,15 +1,9 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod1
-set $background /usr/share/backgrounds/Yala_mountain_by_Geza_Radics.jpg
 
 force_focus_wrapping yes
 focus_follows_mouse no
-
-# Set variables for monitors
-set @monL eDP-1
-set @monM DP-1-1
-set @monR DP-1-2
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -18,6 +12,7 @@ font pango:System San Francisco Display 10
 #deuglify i3
 # class                 border  backgr. text    child_border
 client.focused          #3a5154 #3a5154 #DCDCDC #3a5154
+# client.focused          #787859 #787859 #DCDCDC #787859
 client.focused_inactive #2C3F50 #2F343F #ffffff #484e50
 client.unfocused        #2C3F50 #2F343F #ffffff #484e50
 client.urgent           #C10004 #FFFFFF #ffffff #900000
@@ -29,17 +24,17 @@ bar {
 
     colors{
         background #2F343F
+        # background #787859
         separator  #3a5154
         statusline #DCDCDC
 
         urgent_workspace   #2f343a #ff0000 #ffffff
         focused_workspace  #3a5154 #3a5154 #ffffff
+        # focused_workspace  #787859 #787859 #ffffff
         inactive_workspace #333333 #222222 #888888
         urgent_workspace   #2f343a #900000 #ffffff
     }
 }
-
-exec --no-startup-id feh --bg-scale $background
 
 new_window pixel 3
 
@@ -48,12 +43,13 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Shift+Return exec firefox
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec rofi-launch.sh
+bindsym $mod+d exec dmenu_run
 
 # change focus
 bindsym $mod+h focus left
@@ -111,7 +107,7 @@ bindsym $mod+2 workspace 2:console
 bindsym $mod+3 workspace 3:dev1
 bindsym $mod+4 workspace 4:dev2
 bindsym $mod+5 workspace 5:dok
-bindsym $mod+6 workspace 6
+bindsym $mod+6 workspace 6:stuff
 bindsym $mod+7 workspace 7:gitg
 bindsym $mod+8 workspace 8:server
 bindsym $mod+9 workspace 9:mail
@@ -169,21 +165,22 @@ bindsym $mod+r mode "resize"
 bindsym XF86TouchpadToggle exec /some/path/toggletouchpad.sh # toggle touchpad
 
 # Pulse Audio controls
-set $sink `pactl list short sinks | grep RUNNING | cut -f1`
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute $sink toggle
-bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 1%+ 
-bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 1%-
+# set $sink `pactl list short sinks | grep RUNNING | cut -f1`
+# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute $sink toggle
+bindsym $mod+Prior exec amixer -D pulse sset Master 3%+ 
+bindsym $mod+Next exec amixer -D pulse sset Master 3%-
 
 # Brightness controls
 
-bindsym XF86MonBrightnessUp        exec light -A 10
-bindsym $mod+XF86MonBrightnessUp   exec light -S 100
-bindsym XF86MonBrightnessDown      exec light -U 10
-bindsym $mod+XF86MonBrightnessDown exec light -S 0
+# bindsym XF86MonBrightnessUp        exec light -A 10
+# bindsym $mod+XF86MonBrightnessUp   exec light -S 100
+# bindsym XF86MonBrightnessDown      exec light -U 10
+# bindsym $mod+XF86MonBrightnessDown exec light -S 0
+#
+    
 
 #Lock settings
-set $Locker /home/jbinder/.config/i3/lock.sh
-bindsym Control+Mod1+l exec $Locker
+bindsym Control+Mod1+l exec gnome-screensaver-command -l
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
@@ -199,19 +196,12 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 
-bindsym $mod+Pause mode "$mode_system"
+bindsym $mod+Delete mode "$mode_system"
 
 # move workspace to other screen
 bindsym $mod+m move workspace to output right
 
-#Startup Applications
-exec --no-startup-id nm-applet
-exec whatpulse
-
-exec --no-startup-id xautolock -time 1 -locker "$Locker
-
 #Set Screen Settings
-
 bindsym $mod+Shift+P mode "$mode_monitor"
 
 set $mode_monitor (1) One Screen, (3) Puzzle Screens
@@ -222,9 +212,17 @@ mode "$mode_monitor" {
     bindsym Escape mode "default"
 }
 
+bindsym $mod+shift+s exec gnome-control-center
+
+# Make the currently focused window a scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the first scratchpad window
+bindsym $mod+minus scratchpad show
+
 #Add ssh key to agent
-exec ssh-add ~/.ssh/id_rsa
+# exec ssh-add ~/.ssh/id_rsa
 
 #Run Backup script
-exec userbackup
+# exec userbackup
 
